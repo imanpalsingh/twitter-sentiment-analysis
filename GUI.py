@@ -66,21 +66,26 @@ def Algorithm(file):
 
 #Function to handle Go button event
 def forward():
+    
+    #Getting the tweet
     tw = tweet.get("1.0","end")
+    
+    #Cleaning the tweet
     tw = re.sub('[^a-zA-Z]', ' ', tw)
     tw = re.sub('@[\w]*',' ',tw)
     tw = tw.lower()
     tw = tw.split("\n")
     tw = [ps.stem(token) for token in tw if not token in set(stopwords.words('english'))]
     tw = cv.transform(tw)
-   
     tw = tw.toarray()
     
-    
+    #Predicting the class
     y_pred = nb.predict(tw)
     
+    #Clearning the Entry 
     tweet.delete("1.0","end")
     
+    #Displaying the class
     if y_pred[0] == 0:
         tweet.insert("1.0","The tweet entered is normal ( model's accuracy : {}% )".format(score*100))
     else :
@@ -92,12 +97,8 @@ def clippaste():
     tweet.insert("1.0",pyperclip.paste())
     
 
-
-
-
     
-
-#Initialising algorithm
+ #Initialising algorithm
 Algorithm('train.csv')
     
 #GUI part
